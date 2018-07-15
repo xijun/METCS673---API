@@ -90,8 +90,8 @@ console.log('Socket listening');
 
 io.on('connection', (client) => {
   console.log('client connected');
-  client.on('taskUpdate', (interval) => {
-    client.broadcast.emit('receiveTaskUpdate');
+  client.on('onUpdate', (interval) => {
+    client.broadcast.emit('receiveUpdate');
   });
 
 });
