@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var session = require('express-session');
 var cors = require('cors')
-
+const io = require('socket.io')();
 //routes directory
 var indexRouter = require('./routes/index');
 
@@ -81,6 +81,20 @@ app.get("*", (req, res) => {
       });*/
 
 //start server
+
+io.on('connection', (client) => {
+  client.on('subscribeToTimer', (interval) => {
+    console.log('client is subscribing to timer with interval ', interval);
+    setInterval(() => {
+      client.emit('timer', new Date());
+    }, interval);
+  });
+});
+
+const portSocket = 8000;
+io.listen(portSocket);
+console.log('Socket listening on port ', portSocket);
+
 app.listen(port, () => console.log(`Listening on port ${port}`));
 
 
